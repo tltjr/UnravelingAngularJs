@@ -1,11 +1,19 @@
-﻿<div class="container-fluid">
+﻿<div class="container-fluid" ng-controller="DiveLogController">
     <h1>My Latest Dives (AngularJS)</h1>
     <div class="row">
+        <div class="col-sm-5">
+            <button class="btn btn-primary btn-lg" ng-click="addDive()" ng-disabled="!enableAdd()">
+              Add new dive
+            </button>
+            <button class="btn btn-danger btn-lg" ng-click="clearDives()">
+              Clear dives
+            </button>
+        </div>
         <div class="col-sm-4 col-sm-offset-8">
             <input class="form-control input-lg" placeholder="Search" ng-model="searchKey" />
         </div>
     </div>
-    <div class="row" ng-controller="DiveLogController">
+    <div class="row">
         <div class="col-sm-4" ng-repeat="dive in dives | filter: searchKey">
             <h3>{{dive.site}}</h3>
             <h4>{{dive.location}}</h4>
@@ -19,6 +27,19 @@
     var diveLog = angular.module('diveLog', []);
     diveLog.controller('DiveLogController', ['$scope', function ($scope) {
         window.my_scope = $scope;
-        $scope.dives = dives;
+        var index = 0;
+        $scope.dives = [];
+        $scope.addDive = function() {
+            if ($scope.enableAdd()) {
+                $scope.dives.push(dives[index++]);
+            }
+        }
+        $scope.clearDives = function() {
+            $scope.dives = [];
+            index = 0;
+        }
+        $scope.enableAdd = function() {
+            return index < dives.length;
+        }
     }]);
 </script>
