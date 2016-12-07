@@ -1,45 +1,39 @@
 ﻿<div class="container-fluid" ng-controller="DiveLogController">
-    <h1>My Latest Dives (AngularJS)</h1>
+    <h1>Dive Sites Maintenance</h1>
     <div class="row">
-        <div class="col-sm-5">
-            <button class="btn btn-primary btn-lg" ng-click="addDive()" ng-disabled="!enableAdd()">
-              Add new dive
+        <div class="col-sm-12">
+            <button class="btn btn-primary btn-lg">
+                Add new dive
             </button>
-            <button class="btn btn-danger btn-lg" ng-click="clearDives()">
-              Clear dives
-            </button>
-        </div>
-        <div class="col-sm-4 col-sm-offset-8">
-            <input class="form-control input-lg" placeholder="Search" ng-model="searchKey" />
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-4" ng-repeat="dive in dives | filter: searchKey">
-            <h3>{{dive.site}}</h3>
-            <h4>{{dive.location}}</h4>
-            <h2>{{dive.depth}} feet | {{dive.time}} min</h2>
+    <h2>List of Dive Sites</h2>
+    <div class="row" ng-repeat="site in sites" ng-class="{oddRow: $index % 2 == 0}">
+        <div class="col-sm-8">
+            <h4>{{$index + 1}}: {{site}}</h4>
+        </div>
+        <div class="col-sm-4" style="margin-top: 5px;">
+            <div class="pull-right">
+                <button class="btn btn-warning btn-sm">
+                    Edit
+                </button>
+                <button class="btn btn-danger btn-sm">
+                    Delete
+                </button>
+            </div>
         </div>
     </div>
 </div>
-
-<script type="text/javascript" src="@Url.Content("~/Scripts/dives.js")"></script>
+<style>
+    .oddRow {
+        background-color: #dddddd;
+    }
+</style>
+<script type="text/javascript" src="@Url.Content("~/Scripts/sites.js")"></script>
 <script type="text/javascript">
     var diveLog = angular.module('diveLog', []);
     diveLog.controller('DiveLogController', ['$scope', function ($scope) {
         window.my_scope = $scope;
-        var index = 0;
-        $scope.dives = [];
-        $scope.addDive = function() {
-            if ($scope.enableAdd()) {
-                $scope.dives.push(dives[index++]);
-            }
-        }
-        $scope.clearDives = function() {
-            $scope.dives = [];
-            index = 0;
-        }
-        $scope.enableAdd = function() {
-            return index < dives.length;
-        }
+        $scope.sites = sites;
     }]);
 </script>
